@@ -19,11 +19,14 @@ const Login = () => {
     setError(""); // Reset error on each submit attempt
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login");
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData
+      );
       const token = response.data.token;
       if (token) {
         localStorage.setItem("authToken", token);
-        navigate("/dashboard");
+        navigate("/browse-beat"); // Redirect to dashboard after successful login
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed!");

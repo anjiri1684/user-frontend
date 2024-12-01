@@ -1,15 +1,17 @@
 /* eslint-disable react/prop-types */
-import { Navigate } from "react-router-dom";
-
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 const PrivateRoute = ({ children }) => {
-  const token = localStorage.getItem("authToken");
+  const { isLoggedIn } = useAuth(); // Check if user is logged in
+  const location = useLocation();
 
-  // You might want to add an additional check for token validity
-  if (!token) {
-    return <Navigate to="/login" />;
+  // If the user is not logged in, redirect them to login page
+  if (!isLoggedIn) {
+    console.log("Not logged in, redirecting to login.");
+    return <Navigate to="/login" state={{ from: location }} />;
   }
 
-  return children;
+  return children; // If logged in, render the protected route
 };
 
 export default PrivateRoute;

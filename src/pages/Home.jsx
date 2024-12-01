@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import BeatCard from "../components/BeatCard"; // Ensure BeatCard component is available
-import SubscriptionModal from "../components/SubscriptionModal"; // Import the modal component
+// import SubscriptionModal from "../components/SubscriptionModal"; // Import the modal component
 
 const HomePage = () => {
   const [beats, setBeats] = useState([]);
@@ -60,19 +60,27 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col justify-between bg-[#001a33] p-4">
+    <div className="min-h-screen mt[-30px] flex flex-col justify-between bg-[#001a33] p-4">
       {/* Hero Section */}
       <section className="text-center py-10 text-white mt-20">
         <h1 className="text-5xl font-extrabold mb-6 text-gray-100">
           Discover Your Next Favorite Beat
         </h1>
-        <p className="text-lg sm:text-xl  text-gray-300 max-w-3xl mx-auto">
-          Explore an extensive collection of exclusive beats from talented
-          producers around the world. Whether you’re an artist looking for the
-          perfect instrumental to elevate your next track or a music enthusiast
-          seeking fresh sounds, our platform offers a wide variety of genres and
-          styles. Start your music journey today and unlock endless
-          possibilities with our curated beat library.
+        <p className="text-lg sm:text-xl mt-4  text-gray-300 max-w-3xl mx-auto">
+          Welcome to NIVA Beats At NIVA Beats, you&rsquo;ll find an exclusive
+          collection of high-quality beats designed to inspire and elevate your
+          projects. With over two decades of experience in music production,
+          NIVA is a versatile producer skilled in crafting beats across all
+          genres—from hip-hop and R&B to EDM and beyond.
+        </p>
+        <p className="text-lg sm:text-xl mt-4  text-gray-300 max-w-3xl mx-auto">
+          Every beat is made with precision and passion, ensuring a professional
+          sound that fits your vision. Whether you&rsquo;re an artist, producer,
+          or content creator, NIVA Beats has the perfect sound to bring your
+          ideas to life
+        </p>
+        <p className="text-lg sm:text-xl mt-4  text-gray-300 max-w-3xl mx-auto">
+          Explore the catalog today—your next hit starts here!
         </p>
       </section>
 
@@ -88,16 +96,18 @@ const HomePage = () => {
             No beats at the moment. Please check back later.
           </p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="flex flex-col gap-4">
             {beats.map((beat) => (
-              <BeatCard key={beat._id} beat={beat} />
+              <div className="w-full mb-7" key={beat._id}>
+                <BeatCard beat={beat} />
+              </div>
             ))}
           </div>
         )}
       </section>
 
       {/* Show Subscription Modal if not subscribed */}
-      {showModal && !isSubscribed && <SubscriptionModal />}
+      {/* {showModal && !isSubscribed && <SubscriptionModal />} */}
     </div>
   );
 };

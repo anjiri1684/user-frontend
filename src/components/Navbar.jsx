@@ -1,62 +1,63 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
+import { CartContext } from "../context/CartContext";
 
 const Navbar = () => {
-  // Simulated login state
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const handleLogout = () => {
-    // Simulate logout
-    // Redirect to login page
-
-    setIsLoggedIn(false);
-    console.log("User logged out");
-  };
+  const { isLoggedIn, logout } = useContext(AuthContext);
+  const { cart } = useContext(CartContext); // Access the cart state
 
   return (
-    <nav className="bg-purple-700 z-10 p-4 fixed w-full text-white flex justify-between items-center">
-      <div className="text-2xl font-semibold cursor-pointer">
-        <a href="/">NIVA Productions</a>
+    <nav className="navbar bg-gray-800 p-4 flex justify-between items-center text-white">
+      <div className="logo">
+        <Link to="/" className="text-2xl font-semibold">
+          NIVA Productions
+        </Link>
       </div>
-      <ul className="flex space-x-6">
-        {/* Common Links */}
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/about-us">About Us</Link>
-        </li>
-        <li>
-          <Link to="/policy">Policy</Link>
-        </li>
-        <li>
-          <Link to="/custom-beat-request">Request Custom Beat</Link>
-        </li>
-        <li>
-          <Link to="/browse-beat">Available Beats</Link>
-        </li>
+      <div className="nav-links flex space-x-4">
+        {/* Common link visible for all users */}
+        <Link to="/" className="text-lg">
+          Home
+        </Link>
+        <Link to="/about-us" className="text-lg">
+          About Us
+        </Link>
+        <Link to="/policy" className="text-lg">
+          Policy
+        </Link>
+        <Link to="/custome-beat" className="text-lg">
+          Request Custom Beat
+        </Link>
 
-        {/* Conditional Links */}
-        {!isLoggedIn ? (
+        {/* Links for logged-in users */}
+        {isLoggedIn ? (
           <>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/register">Register</Link>
-            </li>
-          </>
-        ) : (
-          <li>
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 py-1 px-3 rounded hover:bg-red-700"
-            >
+            <Link to="/browse-beat" className="text-lg">
+              Available Beats
+            </Link>
+            <Link to="/cart" className="relative text-lg">
+              🛒
+              {cart.length > 0 && (
+                <span className="absolute top-0 right-0 text-xs bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </Link>
+            <button onClick={logout} className="text-lg">
               Logout
             </button>
-          </li>
+          </>
+        ) : (
+          <>
+            <Link to="/login" className="text-lg">
+              Login
+            </Link>
+            <Link to="/register" className="text-lg">
+              Register
+            </Link>
+          </>
         )}
-      </ul>
+      </div>
     </nav>
   );
 };

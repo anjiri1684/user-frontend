@@ -1,3 +1,56 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Modal content styling */
+.modal-content {
+  background-color: #2d2d2d;
+  padding: 20px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 100%;
+  margin: auto;
+  color: #fff;
+}
+
+/* Modal overlay styling */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style form inputs and buttons */
+.checkout-form input,
+.checkout-form button {
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  width: 100%;
+}
+
+.checkout-form input {
+  border: 1px solid #ddd;
+}
+
+.checkout-form button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.checkout-form button:disabled {
+  background-color: #ccc;
+}
+
+.checkout-form label {
+  display: block;
+  margin-bottom: 5px;
+}
