@@ -21,7 +21,7 @@ const RequestCustomBeat = () => {
     // Construct the mailto link
     const subject = `Custom Beat Request from ${name}`;
     const body = `Name: ${name}%0AEmail: ${email}%0APreferred Beat Style: ${style}%0ADetails: ${description}`;
-    const mailtoLink = `mailto:your-email@example.com?subject=${encodeURIComponent(
+    const mailtoLink = `mailto:customerservice@nivabeats.com?subject=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
 

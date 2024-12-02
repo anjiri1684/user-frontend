@@ -8,38 +8,68 @@ const ForgotPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
+  // Handle reset password functionality
   const handleResetPassword = async (e) => {
     e.preventDefault();
 
+    // Check if passwords match
     if (newPassword !== confirmPassword) {
       setMessage("Passwords do not match.");
+      setNewPassword("");
+      setConfirmPassword("");
+      return;
+    }
+
+    // Validate email format
+    if (!validateEmail(email)) {
+      setMessage("Invalid email format.");
+      return;
+    }
+
+    // Validate password strength
+    if (!validatePasswordStrength(newPassword)) {
+      setMessage(
+        "Password must be at least 8 characters long, contain at least one letter, one number, and one special character."
+      );
       return;
     }
 
     setLoading(true);
 
     try {
+      // Send reset password request to the backend
       const response = await axios.post(
-        "http://localhost:5000/api/auth/reset-password",
+        "http://localhost:5000/api/auth/reset-password", // Adjust URL based on your backend setup
         {
           email,
           newPassword,
         }
       );
       setMessage(response.data.message || "Password reset successfully.");
-
-      // Redirect to login page after successful password reset
       setTimeout(() => {
         navigate("/login");
-      }, 2000); // Adjust the delay as needed
+      }, 2000);
     } catch (error) {
       console.error("Error resetting password:", error);
       setMessage(error.response?.data?.message || "Error resetting password.");
     } finally {
       setLoading(false);
     }
+  };
+
+  // Email validation regex
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  // Password strength validation
+  const validatePasswordStrength = (password) => {
+    const strongPasswordRegex =
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    return strongPasswordRegex.test(password);
   };
 
   return (
@@ -49,10 +79,12 @@ const ForgotPassword = () => {
           Reset Password
         </h2>
 
+        {/* Display message */}
         {message && (
           <div className="text-center text-white mb-4">{message}</div>
         )}
 
+        {/* Password reset form */}
         <form onSubmit={handleResetPassword}>
           <div className="mb-4">
             <label className="block text-sm font-medium text-white">

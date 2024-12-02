@@ -19,8 +19,8 @@ import NotFound from "./pages/NotFound";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import ContactUs from "./components/ContactUs";
-import ForgotPassword from "./pages/Fogotpassword";
-import Dashboard from "./components/Dashboad";
+import ForgotPassword from "./pages/Fogotpassword"; // Fix typo in import
+import Dashboard from "./components/Dashboad"; // Fix typo in import
 
 const stripePromise = loadStripe(
   "pk_test_51QLKzfJCJvofUhZ4AlEJEzPyEK1NZoUfSflOvHhnsnWimWbLC9oOHQiO6Nca3Fa8EdOhAVFz5vGQst9geRGRKeq500PJpHERxp"
@@ -31,8 +31,6 @@ function App() {
     <Router>
       {/* Wrap everything in Router */}
       <AuthProvider>
-        {" "}
-        {/* Wrap AuthProvider inside Router */}
         <Elements stripe={stripePromise}>
           <CartProvider>
             <Navbar />
@@ -41,6 +39,8 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/dashboard" element={<Dashboard />} />{" "}
+              {/* Ensure JSX wrapping */}
               <Route path="/policy" element={<Policy />} />
               <Route
                 path="/browse-beat"
@@ -72,8 +72,6 @@ function App() {
               <Route path="/browse-beat" element={<BeatList />} />
               <Route path="/contact-us" element={<ContactUs />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/dashboard" element={Dashboard} />
-
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

@@ -26,7 +26,8 @@ const Login = () => {
       const token = response.data.token;
       if (token) {
         localStorage.setItem("authToken", token);
-        navigate("/browse-beat"); // Redirect to dashboard after successful login
+        console.log("Token stored in localStorage:", token); // Add log statement
+        navigate("/"); // Redirect to dashboard after successful login
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed!");

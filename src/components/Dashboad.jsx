@@ -1,32 +1,71 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Dashboard = () => {
   const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
-  // Fetch user data on component mount
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/user/me");
-        console.log(response.data); // Log data to ensure correct structure
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          console.error("Token not found in localStorage");
+          navigate("/login"); // Redirect to login if no token
+          return;
+        }
+
+        const response = await axios.get("http://localhost:5000/api/users/me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setUserData(response.data);
       } catch (error) {
         console.error("Error fetching user data:", error);
+        setError(error.response?.data?.message || "Error fetching user data");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [navigate]);
 
-  // Show loading message while data is being fetched
-  if (!userData) {
+  const logout = () => {
+    localStorage.removeItem("authToken");
+    navigate("/login");
+  };
+
+  if (loading) {
     return (
       <div className="h-screen flex justify-center items-center">
         <div className="text-lg text-gray-600">Loading...</div>
       </div>
     );
   }
+
+  if (error) {
+    return (
+      <div className="h-screen flex justify-center items-center">
+        <div className="text-lg text-red-600">Error: {error}</div>
+      </div>
+    );
+  }
+
+  const getGreeting = () => {
+    const hours = new Date().getHours();
+    if (hours < 12) {
+      return "Good Morning";
+    } else if (hours >= 18) {
+      return "Good Evening";
+    } else {
+      return "Good Afternoon";
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-indigo-600 to-blue-800 p-8">
@@ -39,6 +78,12 @@ const Dashboard = () => {
             <div className="bg-green-500 text-white py-1 px-4 rounded-full text-sm font-semibold">
               {userData.subscriptionStatus}
             </div>
+            <button
+              onClick={logout}
+              className="bg-red-500 text-white py-1 px-4 rounded-full text-sm font-semibold"
+            >
+              Logout
+            </button>
           </div>
         </div>
 
@@ -77,11 +122,7 @@ const Dashboard = () => {
         <div className="mt-8">
           <div className="bg-gray-100 p-4 rounded-lg shadow-sm">
             <p className="text-gray-700">
-              Want to change your subscription plan?{" "}
-              <a href="#" className="text-indigo-600 font-semibold">
-                Click here
-              </a>{" "}
-              to manage.
+              {getGreeting()} {userData.firstName}!
             </p>
           </div>
         </div>
