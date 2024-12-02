@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
   const login = (token) => {
     localStorage.setItem("authToken", token); // Store token
     setIsLoggedIn(true); // Set user as logged in
-    navigate("/dashboard"); // Redirect to dashboard after login
+    navigate("/"); // Redirect to dashboard after login
   };
 
   const logout = () => {

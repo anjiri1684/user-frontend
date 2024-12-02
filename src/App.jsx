@@ -18,6 +18,9 @@ import BeatList from "./components/BeatList";
 import NotFound from "./pages/NotFound";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
+import ContactUs from "./components/ContactUs";
+import ForgotPassword from "./pages/Fogotpassword";
+import Dashboard from "./components/Dashboad";
 
 const stripePromise = loadStripe(
   "pk_test_51QLKzfJCJvofUhZ4AlEJEzPyEK1NZoUfSflOvHhnsnWimWbLC9oOHQiO6Nca3Fa8EdOhAVFz5vGQst9geRGRKeq500PJpHERxp"
@@ -67,6 +70,10 @@ function App() {
               <Route path="/success" element={<Success />} />
               <Route path="/error" element={<Error />} />
               <Route path="/browse-beat" element={<BeatList />} />
+              <Route path="/contact-us" element={<ContactUs />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/dashboard" element={Dashboard} />
+
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />

@@ -15,8 +15,8 @@ import { useCart } from "../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-const BeatCard = ({ beat, isPlaying }) => {
-  const [currentPlaying, setCurrentPlaying] = useState(isPlaying);
+const BeatCard = ({ beat }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
   const [isDownloading, setIsDownloading] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
@@ -72,18 +72,13 @@ const BeatCard = ({ beat, isPlaying }) => {
     }
   }, [beat]);
 
-  useEffect(() => {
-    // Whenever the isPlaying prop changes, update currentPlaying state
-    setCurrentPlaying(isPlaying);
-  }, [isPlaying]);
-
   const handlePlayPause = () => {
-    if (currentPlaying) {
+    if (isPlaying) {
       wavesurferRef.current.pause();
     } else {
       wavesurferRef.current.play();
     }
-    setCurrentPlaying(!currentPlaying);
+    setIsPlaying(!isPlaying);
   };
 
   const handleFavorite = async () => {
@@ -99,34 +94,30 @@ const BeatCard = ({ beat, isPlaying }) => {
     }
   };
 
-  const handleDownload = () => {
-    if (!isLoggedIn) {
-      navigate("/login");
-      return;
-    }
-
-    if (beat.price > 0) {
-      setShowDownloadModal(true); // Show modal if beat is paid
-    } else {
-      startDownload(); // Download immediately if it's free
-    }
-  };
-
-  const handleProceedToPayment = async () => {
-    addToCart(beat); // Add the beat to the cart
-    navigate("/checkout"); // Proceed to checkout page
-    setShowDownloadModal(false); // Close modal
-  };
-
   const startDownload = async () => {
     try {
       setIsDownloading(true);
+
+      // Log the beat ID to verify it's the correct one
+      console.log("Starting download for beat ID:", beat.id);
+
+      // Call the backend to get the download URL
       const response = await axios.get(`/api/download/${beat.id}`);
+
+      // Log the response to verify the URL
+      console.log("Download URL:", response.data.downloadUrl);
+
       const downloadUrl = response.data.downloadUrl;
 
+      // Ensure the download URL is valid
+      if (!downloadUrl) {
+        throw new Error("Download URL not found.");
+      }
+
+      // Create a link element and trigger the download
       const link = document.createElement("a");
       link.href = downloadUrl;
-      link.download = beat.name;
+      link.download = beat.name || "beat-file";
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -135,6 +126,27 @@ const BeatCard = ({ beat, isPlaying }) => {
     } finally {
       setIsDownloading(false);
     }
+  };
+
+  const handleDownload = () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+
+    if (beat?.price > 0 && !beat?.isPaidSuccessfully) {
+      // Show modal to inform user that payment is required
+      setShowDownloadModal(true);
+    } else {
+      // Proceed with download if it's free or paid
+      startDownload();
+    }
+  };
+
+  const handleProceedToPayment = async () => {
+    addToCart(beat); // Add the beat to the cart
+    navigate("/checkout"); // Proceed to checkout page
+    setShowDownloadModal(false); // Close modal
   };
 
   const handleAddToCart = () => {
@@ -154,7 +166,7 @@ const BeatCard = ({ beat, isPlaying }) => {
       alert(response.data.message || "Added to playlist!");
     } catch (error) {
       console.error("Error adding to playlist:", error);
-      // alert("Failed to add to playlist.");
+      alert("Failed to add to playlist.");
     }
   };
 
@@ -165,11 +177,7 @@ const BeatCard = ({ beat, isPlaying }) => {
   };
 
   return (
-    <div
-      className={`beat-card p-6 bg-gray-800 text-white rounded-lg shadow-xl flex flex-col md:flex-row items-center mb-7 ${
-        currentPlaying ? "border-4 border-blue-500" : ""
-      }`}
-    >
+    <div className="beat-card p-6 bg-gray-800 text-white rounded-lg shadow-xl flex flex-col md:flex-row items-center mb-7">
       <div className="beat-image w-32 h-32 mb-4 md:mb-0 mr-4">
         <img
           src={beat?.image || "default-image-url"}
@@ -192,18 +200,16 @@ const BeatCard = ({ beat, isPlaying }) => {
       </div>
       <div
         ref={waveformRef}
-        className="waveform flex-grow h-24 rounded-lg mx-2"
+        className="waveform flex-grow h-24  rounded-lg mx-2"
       >
         {isLoading && <p>Loading...</p>}
       </div>
       <div className="beat-controls flex space-x-4">
         <button
           onClick={handlePlayPause}
-          className={`p-3 rounded-full ${
-            currentPlaying ? "bg-red-600" : "bg-blue-600"
-          } hover:bg-blue-700 transition`}
+          className="p-3 rounded-full bg-blue-600 hover:bg-blue-700 transition"
         >
-          {currentPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
+          {isPlaying ? <FaPause size={24} /> : <FaPlay size={24} />}
         </button>
         <button
           onClick={handleFavorite}
@@ -249,20 +255,23 @@ const BeatCard = ({ beat, isPlaying }) => {
 
       {/* Modal for purchase confirmation */}
       {showDownloadModal && (
-        <div className="modal fixed inset-0 flex items-center justify-center bg-gray-600 bg-opacity-50">
-          <div className="modal-content bg-white p-6 rounded-lg shadow-lg">
-            <p className="text-lg">
-              To download this beat, you need to pay ${beat.price}.
+        <div className="modal fixed inset-0 bg-[#001a33] bg-opacity-50 flex items-center justify-center z-50">
+          <div className="modal-content bg-white p-8 rounded-lg shadow-xl w-96">
+            <h3 className="text-2xl font-semibold text-slate-50 mb-4">
+              To Download, Purchase the Beat
+            </h3>
+            <p className="text-sm text-slate-50 mb-6">
+              You need to purchase this beat before downloading.
             </p>
             <button
               onClick={handleProceedToPayment}
-              className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg"
+              className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition"
             >
-              Proceed to Payment
+              Go to Payment
             </button>
             <button
               onClick={() => setShowDownloadModal(false)}
-              className="mt-2 px-6 py-2 bg-gray-400 text-white rounded-lg"
+              className="bg-gray-500 text-white px-6 py-2 rounded-full hover:bg-gray-600 transition ml-4"
             >
               Close
             </button>
