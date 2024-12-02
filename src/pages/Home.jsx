@@ -35,7 +35,7 @@ const HomePage = () => {
           return;
         }
 
-        const userResponse = await axios.get("http://localhost:5000/api/user", {
+        const userResponse = await axios.get("https://www.api.nivabeats.com/api/user", {
           headers: { Authorization: `Bearer ${token}` },
         });
 

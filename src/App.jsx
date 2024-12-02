@@ -23,7 +23,7 @@ import ForgotPassword from "./pages/Fogotpassword"; // Fix typo in import
 import Dashboard from "./components/Dashboad"; // Fix typo in import
 
 const stripePromise = loadStripe(
-  "pk_test_51QLKzfJCJvofUhZ4AlEJEzPyEK1NZoUfSflOvHhnsnWimWbLC9oOHQiO6Nca3Fa8EdOhAVFz5vGQst9geRGRKeq500PJpHERxp"
+  "pk_live_51QPoZOP5drFjM1oPZ0cqu5883N4dmRGl0SBrm90S89SDWjsyJyYJhISB6L2LmP2x7PLWMuuOSDUaFhZylU6z3JbP00pHGg72Ko"
 );
 
 function App() {

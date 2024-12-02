@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     try {
       // Send reset password request to the backend
       const response = await axios.post(
-        "http://localhost:5000/api/auth/reset-password", // Adjust URL based on your backend setup
+        "https://www.api.nivabeats.com/api/auth/reset-password", // Adjust URL based on your backend setup
         {
           email,
           newPassword,

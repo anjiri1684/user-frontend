@@ -7,7 +7,7 @@ const ContactUs = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const mailtoLink = `mailto:support@example.com?subject=Support Request from ${name}&body=${message}%0D%0A%0D%0AFrom: ${name} (${email})`;
+    const mailtoLink = `mailto:support@example.com?subject=Support Request from ${name}&body=${message}From: ${name} (${email})`;
     window.location.href = mailtoLink;
   };
 
