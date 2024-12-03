@@ -20,7 +20,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://apinivabeats.netlify.app/api/auth/login",
+        "https://api-nivabeats-com.onrender.com/api/auth/login",
         formData
       );
       const token = response.data.token;
