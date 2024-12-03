@@ -26,7 +26,7 @@ const Register = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://niva-beats-backend.onrender.com/api/auth/register",
+        "https://niva-beats-backend.vercel.app/api/auth/register",
         { firstName, lastName, email, password, state, city, country, age }
       );
       // Redirect to login after successful registration

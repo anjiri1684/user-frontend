@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://niva-beats-backend.onrender.com"; // Replace with your backend URL
+const API_URL = "https://niva-beats-backend.vercel.app/"; // Replace with your backend URL
 
 // Create an instance of axios with default configurations
 const api = axios.create({

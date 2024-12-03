@@ -19,7 +19,7 @@ const Dashboard = () => {
         }
 
         const response = await axios.get(
-          "https://niva-beats-backend.onrender.com/api/users/me",
+          "https://niva-beats-backend.vercel.app/api/users/me",
           {
             headers: {
               Authorization: `Bearer ${token}`,

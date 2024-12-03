@@ -41,7 +41,7 @@ const ForgotPassword = () => {
     try {
       // Send reset password request to the backend
       const response = await axios.post(
-        "https://niva-beats-backend.onrender.com/api/auth/reset-password", // Adjust URL based on your backend setup
+        "https://niva-beats-backend.vercel.app/api/auth/reset-password", // Adjust URL based on your backend setup
         {
           email,
           newPassword,

@@ -12,7 +12,7 @@ const BeatList = () => {
 
   useEffect(() => {
     // Fetch beats from your API
-    fetch("https://niva-beats-backend.onrender.com/api/beats")
+    fetch("https://niva-beats-backend.vercel.app/api/beats")
       .then((res) => res.json())
       .then((data) => setBeats(data))
       .catch((err) => console.error("Error fetching beats", err));
