@@ -19,7 +19,7 @@ const Dashboard = () => {
         }
 
         const response = await axios.get(
-          "https://www.api.nivabeats.com/api/users/me",
+          "https://api-nivabeats-com.onrender.com/api/users/me",
           {
             headers: {
               Authorization: `Bearer ${token}`,

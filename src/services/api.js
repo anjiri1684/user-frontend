@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://www.api.nivabeats.com"; // Replace with your backend URL
+const API_URL = "https://apinivabeats.netlify.app"; // Replace with your backend URL
 
 // Create an instance of axios with default configurations
 const api = axios.create({

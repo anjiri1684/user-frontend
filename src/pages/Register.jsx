@@ -26,7 +26,7 @@ const Register = () => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://www.api.nivabeats.com/api/auth/register",
+        "https://apinivabeats.netlify.app/api/auth/register",
         { firstName, lastName, email, password, state, city, country, age }
       );
       // Redirect to login after successful registration

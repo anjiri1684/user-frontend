@@ -40,7 +40,7 @@ const CheckoutForm = () => {
 
     try {
       console.log("Sending cart details to backend to create PaymentIntent...");
-      const backendUrl = `https://www.api.nivabeats.com/checkout/create-payment-intent`;
+      const backendUrl = `https://api-nivabeats-com.onrender.com/checkout/create-payment-intent`;
 
       const { data } = await axios.post(backendUrl, {
         beatIds: cart.map((item) => item._id),

@@ -15,7 +15,7 @@ const HomePage = () => {
   useEffect(() => {
     // Fetch beats data
     axios
-      .get("https://www.api.nivabeats.com/api/beats")
+      .get("https://apinivabeats.netlify.app/api/beats")
       .then((response) => {
         setBeats(response.data);
         setLoading(false);
@@ -36,7 +36,7 @@ const HomePage = () => {
         }
 
         const userResponse = await axios.get(
-          "https://www.api.nivabeats.com/api/user",
+          "https://apinivabeats.netlify.app/api/user",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
