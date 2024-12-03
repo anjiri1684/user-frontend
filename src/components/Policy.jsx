@@ -1,5 +1,4 @@
 /* eslint-disable react/no-unescaped-entities */
-/* eslint-disable no-irregular-whitespace */
 const Policy = () => {
   return (
     <div className="bg-[#001a33] p-8 min-h-screen">
