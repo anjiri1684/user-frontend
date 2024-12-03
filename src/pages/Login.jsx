@@ -20,7 +20,7 @@ const Login = () => {
 
     try {
       const response = await axios.post(
-        "https://api-nivabeats-com.onrender.com/api/auth/login",
+        "https://niva-beats-backend.onrender.com/api/auth/login",
         formData
       );
       const token = response.data.token;
